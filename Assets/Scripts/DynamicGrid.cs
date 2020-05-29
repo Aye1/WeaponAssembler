@@ -1,0 +1,229 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Linq;
+
+[ExecuteInEditMode]
+public class DynamicGrid : MonoBehaviour
+{
+    public Cell cellTemplate;
+    public Cell[,] gameMatrix;
+    public int cellSize = 50;
+
+    public int rowCount;
+    public int columnCount;
+
+    private List<Cell> hoveredCells;
+    
+    /*
+     *  0,11         11,11
+     * 
+     * 
+     * 
+     * 
+     *  0,0          11,0
+     */    
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        if(transform.childCount == 0)
+        {
+            InitMatrix();
+        } else
+        {
+            FindExistingCells();
+        }
+        for(int i = 4; i<6; i++)
+        {
+            for (int j = 4; j <= 6; j++)
+            {
+                SetCellState(i, j, CellState.Open);
+            }
+        }
+    }
+
+    public void InitMatrix()
+    {
+        gameMatrix = new Cell[columnCount, rowCount];
+        Vector2 size = new Vector2(columnCount * cellSize, rowCount * cellSize);
+        for (int i=0; i<columnCount; i++)
+        {
+            for (int j=0; j<rowCount; j++)
+            {
+                gameMatrix[i, j] = Instantiate(cellTemplate, transform);
+                gameMatrix[i, j].transform.localPosition = new Vector3(i * cellSize + (cellSize - size.x) * 0.5f, j * cellSize + (cellSize - size.y) * 0.5f, 0.0f);
+                gameMatrix[i, j].x = i;
+                gameMatrix[i, j].y = j;
+            }
+        }
+        transform.position = new Vector3(transform.position.x - columnCount / 2 * cellSize
+            , transform.position.y - rowCount / 2 * cellSize
+            , transform.position.z);
+        RectTransform rect = GetComponent<RectTransform>();
+        rect.sizeDelta = size;
+        transform.localPosition = new Vector3(0.0f, 0.0f, transform.localPosition.z);
+    }
+
+    private void FindExistingCells()
+    {
+        gameMatrix = new Cell[columnCount, rowCount];
+        foreach (Cell cell in GetComponentsInChildren<Cell>())
+        {
+            gameMatrix[cell.x, cell.y] = cell;
+        }
+    }
+
+    public void ClearGrid()
+    {
+        List<Transform> tempList = transform.Cast<Transform>().ToList();
+        foreach (Transform t in tempList)
+        {
+            if (t != transform)
+            {
+                DestroyImmediate(t.gameObject);
+            }
+        }
+    }
+
+    public void SetCellState(int x, int y, CellState state)
+    {
+        gameMatrix[x, y].state = state;
+    }
+
+    public Cell GetClosestCell(Vector3 pos)
+    {
+        float minDistance = float.MaxValue;
+        Cell closestCell = null;
+        Vector2 refPos = new Vector2(pos.x, pos.y);
+        foreach(Cell cell in gameMatrix)
+        {
+            Vector2 posXY = new Vector2(cell.transform.position.x, cell.transform.position.y);
+            float dist = Vector2.Distance(posXY, refPos);
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                closestCell = cell;
+            }
+        }
+        return closestCell;
+    }
+
+    private bool CanPutEquipmentOnCell(Equipment e, Cell c)
+    {
+        List<Cell> gridCells = FindCellsWithPatternAndCenter(e, c.x, c.y);
+        bool canPut = true;
+        foreach (Cell currCell in gridCells)
+        {
+            canPut = canPut && currCell.tempState == TempCellState.OK;
+        }
+        return canPut;
+    }
+
+    public void ManageDrag(Equipment e)
+    {
+        Cell closestCell = GetClosestCell(Input.mousePosition);
+        hoveredCells = FindCellsWithPatternAndCenter(e, closestCell.x, closestCell.y);
+        ValidateEquipmentPosition(e, hoveredCells);
+    }
+
+    public List<Cell> FindCellsWithPatternAndCenter(Equipment e, int x, int y)
+    {
+        ResetTempStates();
+        List<Cell> subset = new List<Cell>();
+        for(int i=-1; i<2; i++)
+        {
+            for (int j=-1; j<2; j++)
+            {
+                if (GridContains(x + i, y + j))
+                {
+                    Cell gridCell = gameMatrix[x + i, y + j];
+                    CellState equipCellState = e.states[i + 1, j + 1];
+
+                    if (x + i < columnCount && x + i >= 0 && y + j < rowCount && y + j >= 0
+                    && equipCellState != CellState.Empty)
+                    {
+                        subset.Add(gridCell);
+                        if (equipCellState == CellState.Used)
+                        {
+                            gridCell.tempState = gridCell.state == CellState.Open ? TempCellState.OK : TempCellState.NOK;
+                        }
+                        if (equipCellState == CellState.Open)
+                        {
+                            if (gridCell.state == CellState.Open || gridCell.state == CellState.Inactive)
+                            {
+                                gridCell.tempState = TempCellState.OK;
+                            }
+                            else
+                            {
+                                gridCell.tempState = TempCellState.NOK;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return subset;
+    }
+
+    private bool GridContains(int x, int y)
+    {
+        return x >= 0 && x < gameMatrix.GetLength(0) && y >= 0 && y < gameMatrix.GetLength(1);
+    }
+
+    public bool ValidateEquipmentPosition(Equipment e, List<Cell> gridCells)
+    {
+        List<CellState> stateList = new List<CellState>();
+        foreach (CellState c in e.states)
+        {
+            stateList.Add(c);
+        }
+        int expectedCellsCount = stateList.Count(c => c != CellState.Inactive);
+        return gridCells.Count == expectedCellsCount;
+    }
+
+    private void ResetTempStates()
+    {
+        foreach (Cell c in gameMatrix)
+        {
+            c.tempState = TempCellState.NAN;
+        }
+    }
+
+    public void PutEquipment(Equipment e)
+    {
+        Cell closestCell = GetClosestCell(Input.mousePosition);
+        ManageStatesAfterPut(e, closestCell);
+    }
+
+    private void ManageStatesAfterPut(Equipment e, Cell cell)
+    {
+        if (CanPutEquipmentOnCell(e, cell))
+        {
+        int x = cell.x;
+        int y = cell.y;
+            for (int i = -1; i < 2; i++)
+            {
+                for (int j = -1; j < 2; j++)
+                {
+                    Cell gridCell = gameMatrix[x + i, y + j];
+                    gridCell.tempState = TempCellState.NAN;
+                    CellState equipCellState = e.states[i + 1, j + 1];
+
+                    if (x + i < columnCount && x + i >= 0 && y + j < rowCount && y + j >= 0
+                    && equipCellState != CellState.Empty)
+                    {
+                        if (equipCellState == CellState.Used)
+                        {
+                            gridCell.state = CellState.Used;
+                        }
+                        if (equipCellState == CellState.Open && gridCell.state == CellState.Inactive)
+                        {
+                            gridCell.state = CellState.Open;
+                        }
+                    }
+                }
+            }       
+        }
+    }
+}
