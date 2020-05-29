@@ -114,7 +114,7 @@ public class DynamicGrid : MonoBehaviour
     private bool CanPutEquipmentOnCell(Equipment e, Cell c)
     {
         List<Cell> gridCells = FindCellsWithPatternAndCenter(e, c.x, c.y);
-        bool canPut = true;
+        bool canPut = e.GetAllStatesList().Count(st => st != CellState.Empty) == gridCells.Count;
         foreach (Cell currCell in gridCells)
         {
             canPut = canPut && currCell.tempState == TempCellState.OK;
@@ -149,7 +149,7 @@ public class DynamicGrid : MonoBehaviour
                     Cell gridCell = gameMatrix[idx, idy];
                     CellState equipCellState = e.GetState(i, rows-1-j);
 
-                    if (x + i <= columnCount && x + i >= 0 && y + j <= rowCount && y + j >= 0
+                    if (idx <= columnCount && idx >= 0 && idy <= rowCount && idy >= 0
                     && equipCellState != CellState.Empty)
                     {
                         subset.Add(gridCell);

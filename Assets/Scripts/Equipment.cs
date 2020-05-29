@@ -97,6 +97,11 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         return _states;
     }
 
+    public IEnumerable<CellState> GetAllStatesList()
+    {
+        return _states.Cast<CellState>().ToList();
+    }
+
     public void ClearCells()
     {
         List<Transform> tempList = transform.Cast<Transform>().ToList();
