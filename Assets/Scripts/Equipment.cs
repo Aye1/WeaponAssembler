@@ -3,21 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Linq;
+using System;
 
 [ExecuteInEditMode]
 public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler
 {
-    public CellState[,] states = {  { CellState.Empty, CellState.Used, CellState.Open },
-                                    { CellState.Empty, CellState.Used, CellState.Empty },
+    private CellState[,] _states = { { CellState.Empty, CellState.Open, CellState.Empty },
+                                    { CellState.Open, CellState.Used, CellState.Empty },
+                                    { CellState.Open, CellState.Used, CellState.Open },
+                                    { CellState.Open, CellState.Open, CellState.Open },
                                     { CellState.Open, CellState.Open, CellState.Open }
-                                 };
+                                  };
 
     private Cell[] cells;
+    private int cellSize = 50;
 
     public Cell cellTemplate;
     
     private bool dragging = false;
     private DynamicGrid grid;
+
+    private Vector2Int _size;
+    public Vector2Int Size
+    {
+        get {
+            if(_size == Vector2.zero)
+            {
+                _size = new Vector2Int(_states.GetLength(1), _states.GetLength(0));
+            }
+            return _size;
+        }
+    }
 
 
     // Start is called before the first frame update
@@ -36,34 +52,49 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     public void GenerateCells()
     {
         ClearCells();
-        cells = new Cell[9];
+        cells = new Cell[_states.Length];
+        int rows = _states.GetLength(0);
+        int cols = _states.GetLength(1);
         int k = 0;
-        for (int i = -1; i <= 1; i++)
+        Vector3 offset = new Vector3(-(cols-1)*0.5f*cellSize, (rows-1)*0.5f*cellSize, 0.0f);
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = -1; j <= 1; j++)
+            for (int j = 0; j < cols; j++)
             {
-                if (states[i + 1, j + 1] != CellState.Empty)
+                if (_states[i, j] != CellState.Empty)
                 {
                     Cell newCell = Instantiate(cellTemplate, transform);
-                    newCell.transform.localPosition = new Vector3(i * 50, j * 50, 0.0f);
-                    newCell.state = states[i + 1, j + 1];
+                    newCell.transform.localPosition = new Vector3(j * cellSize, -i * cellSize, 0.0f) + offset;
+                    newCell.state = _states[i, j];
                     cells[k] = newCell;
 
                     k++;
                 }
             }
         }
+        RectTransform rect = GetComponent<RectTransform>();
+        rect.sizeDelta = new Vector2(cols * cellSize, rows * cellSize);
     }
 
     private void FindExistingCells()
     {
-        cells = new Cell[9];
+        cells = new Cell[_states.Length];
         int i = 0;
         foreach(Cell cell in GetComponentsInChildren<Cell>())
         {
             cells[i] = cell;
             i++;
         }
+    }
+
+    public CellState GetState(int col, int row)
+    {
+        return _states[row, col];
+    }
+
+    public CellState[,] GetAllStates()
+    {
+        return _states;
     }
 
     public void ClearCells()

@@ -21,4 +21,10 @@ public class EquipmentEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
     }
+
+    private void GenerateCellsMatrix(Equipment equip)
+    {
+        int cols = equip.Size.y;
+        int rows = equip.Size.x;
+    }
 }

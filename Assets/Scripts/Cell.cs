@@ -30,6 +30,7 @@ public class Cell : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _text.text = "(" + x + ", " + y+")";
         if (tempState == TempCellState.NAN)
         {
             switch (state)

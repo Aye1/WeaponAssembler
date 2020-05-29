@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 [ExecuteInEditMode]
 public class DynamicGrid : MonoBehaviour
@@ -34,9 +35,9 @@ public class DynamicGrid : MonoBehaviour
         {
             FindExistingCells();
         }
-        for(int i = 4; i<6; i++)
+        for(int i = 2; i<4; i++)
         {
-            for (int j = 4; j <= 6; j++)
+            for (int j = 2; j <= 4; j++)
             {
                 SetCellState(i, j, CellState.Open);
             }
@@ -45,6 +46,7 @@ public class DynamicGrid : MonoBehaviour
 
     public void InitMatrix()
     {
+        ClearGrid();
         gameMatrix = new Cell[columnCount, rowCount];
         Vector2 size = new Vector2(columnCount * cellSize, rowCount * cellSize);
         for (int i=0; i<columnCount; i++)
@@ -131,16 +133,23 @@ public class DynamicGrid : MonoBehaviour
     {
         ResetTempStates();
         List<Cell> subset = new List<Cell>();
-        for(int i=-1; i<2; i++)
-        {
-            for (int j=-1; j<2; j++)
-            {
-                if (GridContains(x + i, y + j))
-                {
-                    Cell gridCell = gameMatrix[x + i, y + j];
-                    CellState equipCellState = e.states[i + 1, j + 1];
+        int cols = e.Size.x;
+        int rows = e.Size.y;
+        int offsetX = cols / 2;
+        int offsetY = rows / 2;
 
-                    if (x + i < columnCount && x + i >= 0 && y + j < rowCount && y + j >= 0
+        for(int i=0; i<cols; i++)
+        {
+            for (int j=0; j<rows; j++)
+            {
+                int idx = x + i - offsetX;
+                int idy = y + j - offsetY;
+                if (GridContains(idx, idy))
+                {
+                    Cell gridCell = gameMatrix[idx, idy];
+                    CellState equipCellState = e.GetState(i, rows-1-j);
+
+                    if (x + i <= columnCount && x + i >= 0 && y + j <= rowCount && y + j >= 0
                     && equipCellState != CellState.Empty)
                     {
                         subset.Add(gridCell);
@@ -174,7 +183,7 @@ public class DynamicGrid : MonoBehaviour
     public bool ValidateEquipmentPosition(Equipment e, List<Cell> gridCells)
     {
         List<CellState> stateList = new List<CellState>();
-        foreach (CellState c in e.states)
+        foreach (CellState c in e.GetAllStates())
         {
             stateList.Add(c);
         }
@@ -200,17 +209,22 @@ public class DynamicGrid : MonoBehaviour
     {
         if (CanPutEquipmentOnCell(e, cell))
         {
-        int x = cell.x;
-        int y = cell.y;
-            for (int i = -1; i < 2; i++)
+            int x = cell.x;
+            int y = cell.y;
+            int cols = e.Size.x;
+            int rows = e.Size.y;
+            int offsetX = cols / 2;
+            int offsetY = rows / 2;
+            for (int i = 0; i < cols; i++)
             {
-                for (int j = -1; j < 2; j++)
+                for (int j = 0; j < rows; j++)
                 {
-                    Cell gridCell = gameMatrix[x + i, y + j];
+                    Cell gridCell = gameMatrix[x + i - offsetX, y + j - offsetY];
                     gridCell.tempState = TempCellState.NAN;
-                    CellState equipCellState = e.states[i + 1, j + 1];
+                    CellState equipCellState = CellState.Empty;
+                    equipCellState = e.GetState(i, rows - 1 - j);
 
-                    if (x + i < columnCount && x + i >= 0 && y + j < rowCount && y + j >= 0
+                    if (x + i <= columnCount && x + i >= 0 && y + j <= rowCount && y + j >= 0
                     && equipCellState != CellState.Empty)
                     {
                         if (equipCellState == CellState.Used)
