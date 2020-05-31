@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,9 +56,19 @@ public class EquipmentLayout : ScriptableObject
         }
     }
 
+    public CellState[] GetAllStates()
+    {
+        return _states;
+    }
+
     public int CellCount()
     {
         return _states.Length;
+    }
+
+    public int VisibleCellCount()
+    {
+        return _states.Count(x => x == CellState.Open || x == CellState.Used);
     }
 
     private void ResetStates(CellState[,] snapshot)

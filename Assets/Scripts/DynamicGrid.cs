@@ -15,27 +15,28 @@ public class DynamicGrid : MonoBehaviour
     public int columnCount;
 
     private List<Cell> hoveredCells;
-    
+
     /*
-     *  0,11         11,11
+     *  0,0            c-1,0
      * 
      * 
      * 
      * 
-     *  0,0          11,0
-     */    
+     *  0,r-1          c-1,r-1
+     */
 
     // Start is called before the first frame update
     void Start()
     {
-        if(transform.childCount == 0)
+        if (transform.childCount == 0)
         {
             InitMatrix();
-        } else
+        }
+        else
         {
             FindExistingCells();
         }
-        for(int i = 2; i<4; i++)
+        for (int i = 2; i < 4; i++)
         {
             for (int j = 2; j <= 4; j++)
             {
@@ -49,12 +50,12 @@ public class DynamicGrid : MonoBehaviour
         ClearGrid();
         gameMatrix = new Cell[columnCount, rowCount];
         Vector2 size = new Vector2(columnCount * cellSize, rowCount * cellSize);
-        for (int i=0; i<columnCount; i++)
+        for (int i = 0; i < columnCount; i++)
         {
-            for (int j=0; j<rowCount; j++)
+            for (int j = 0; j < rowCount; j++)
             {
                 gameMatrix[i, j] = Instantiate(cellTemplate, transform);
-                gameMatrix[i, j].transform.localPosition = new Vector3(i * cellSize + (cellSize - size.x) * 0.5f, j * cellSize + (cellSize - size.y) * 0.5f, 0.0f);
+                gameMatrix[i, j].transform.localPosition = new Vector3(i * cellSize + (cellSize - size.x) * 0.5f, -j * cellSize - (cellSize - size.y) * 0.5f, 0.0f);
                 gameMatrix[i, j].x = i;
                 gameMatrix[i, j].y = j;
             }
@@ -98,7 +99,7 @@ public class DynamicGrid : MonoBehaviour
         float minDistance = float.MaxValue;
         Cell closestCell = null;
         Vector2 refPos = new Vector2(pos.x, pos.y);
-        foreach(Cell cell in gameMatrix)
+        foreach (Cell cell in gameMatrix)
         {
             Vector2 posXY = new Vector2(cell.transform.position.x, cell.transform.position.y);
             float dist = Vector2.Distance(posXY, refPos);
@@ -114,7 +115,7 @@ public class DynamicGrid : MonoBehaviour
     private bool CanPutEquipmentOnCell(Equipment e, Cell c)
     {
         List<Cell> gridCells = FindCellsWithPatternAndCenter(e, c.x, c.y);
-        bool canPut = e.GetAllStatesList().Count(st => st != CellState.Empty) == gridCells.Count;
+        bool canPut = e.GetAllStates().Count(st => st != CellState.Empty) == gridCells.Count;
         foreach (Cell currCell in gridCells)
         {
             canPut = canPut && currCell.tempState == TempCellState.OK;
@@ -138,16 +139,16 @@ public class DynamicGrid : MonoBehaviour
         int offsetX = cols / 2;
         int offsetY = rows / 2;
 
-        for(int i=0; i<cols; i++)
+        for (int i = 0; i < e.Cols; i++)
         {
-            for (int j=0; j<rows; j++)
+            for (int j = 0; j < e.Rows; j++)
             {
                 int idx = x + i - offsetX;
                 int idy = y + j - offsetY;
                 if (GridContains(idx, idy))
                 {
                     Cell gridCell = gameMatrix[idx, idy];
-                    CellState equipCellState = e.GetState(i, rows-1-j);
+                    CellState equipCellState = e.GetLayoutState(i, j);
 
                     if (idx <= columnCount && idx >= 0 && idy <= rowCount && idy >= 0
                     && equipCellState != CellState.Empty)
@@ -222,7 +223,7 @@ public class DynamicGrid : MonoBehaviour
                     Cell gridCell = gameMatrix[x + i - offsetX, y + j - offsetY];
                     gridCell.tempState = TempCellState.NAN;
                     CellState equipCellState = CellState.Empty;
-                    equipCellState = e.GetState(i, rows - 1 - j);
+                    equipCellState = e.GetLayoutState(i, j);
 
                     if (x + i <= columnCount && x + i >= 0 && y + j <= rowCount && y + j >= 0
                     && equipCellState != CellState.Empty)
@@ -237,7 +238,7 @@ public class DynamicGrid : MonoBehaviour
                         }
                     }
                 }
-            }       
+            }
         }
     }
 }
