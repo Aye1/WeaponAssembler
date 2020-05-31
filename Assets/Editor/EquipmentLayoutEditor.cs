@@ -10,7 +10,6 @@ public class EquipmentLayoutEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        //base.OnInspectorGUI();
         EquipmentLayout equip = (EquipmentLayout)target;
         GeneratePropertyFields();
         EditorGUILayout.Space();
@@ -22,6 +21,7 @@ public class EquipmentLayoutEditor : Editor
         EquipmentLayout equip = (EquipmentLayout)target;
 
         EditorGUILayout.LabelField("Size", EditorStyles.boldLabel);
+        EditorGUILayout.Space();
         EditorGUI.indentLevel++;
         GUILayoutOption[] options = new GUILayoutOption[]
         {
@@ -48,10 +48,11 @@ public class EquipmentLayoutEditor : Editor
         int rows = equip.Rows;
 
         EditorGUILayout.LabelField("Grid", EditorStyles.boldLabel);
+        EditorGUILayout.Space();
         GUILayoutOption[] options = new GUILayoutOption[]
         {
-            GUILayout.Width(20),
-            GUILayout.Height(20)
+            GUILayout.Width(30),
+            GUILayout.Height(30)
         };
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
 

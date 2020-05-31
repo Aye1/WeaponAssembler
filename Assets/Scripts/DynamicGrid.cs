@@ -133,8 +133,8 @@ public class DynamicGrid : MonoBehaviour
     {
         ResetTempStates();
         List<Cell> subset = new List<Cell>();
-        int cols = e.Size.x;
-        int rows = e.Size.y;
+        int cols = e.Cols;
+        int rows = e.Rows;
         int offsetX = cols / 2;
         int offsetY = rows / 2;
 
@@ -211,8 +211,8 @@ public class DynamicGrid : MonoBehaviour
         {
             int x = cell.x;
             int y = cell.y;
-            int cols = e.Size.x;
-            int rows = e.Size.y;
+            int cols = e.Cols;
+            int rows = e.Rows;
             int offsetX = cols / 2;
             int offsetY = rows / 2;
             for (int i = 0; i < cols; i++)

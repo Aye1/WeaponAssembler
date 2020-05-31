@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
+[Serializable]
 public enum CellState { Inactive, Open, Used, Empty };
 public enum TempCellState { OK, NOK, NAN};
 

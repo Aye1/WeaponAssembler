@@ -8,10 +8,7 @@ using System;
 [ExecuteInEditMode]
 public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler
 {
-    private CellState[,] _states = { { CellState.Empty, CellState.Empty, CellState.Empty},
-                                     { CellState.Empty, CellState.Open, CellState.Empty },
-                                     { CellState.Open, CellState.Used, CellState.Open },
-                                  };
+    public EquipmentLayout layout;
 
     private Cell[] cells;
     private int cellSize = 50;
@@ -20,8 +17,9 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     
     private bool dragging = false;
     private DynamicGrid grid;
+    private CellState[,] _states;
 
-    private Vector2Int _size;
+    /*private Vector2Int _size;
     public Vector2Int Size
     {
         get {
@@ -31,39 +29,55 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             }
             return _size;
         }
+    }*/
+
+    public int Cols
+    {
+        get { return layout.Cols; }
+    }
+
+    public int Rows
+    {
+        get { return layout.Rows; }
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        if(transform.childCount == 0)
+        if (layout != null)
         {
-            GenerateCells();
-        } else
-        {
-            FindExistingCells();
+            if (transform.childCount == 0)
+            {
+                GenerateCells();
+            }
+            else
+            {
+                FindExistingCells();
+            }
+            grid = FindObjectOfType<DynamicGrid>();
         }
-        grid = FindObjectOfType<DynamicGrid>();
     }
 
     public void GenerateCells()
     {
         ClearCells();
-        cells = new Cell[_states.Length];
-        int rows = _states.GetLength(0);
-        int cols = _states.GetLength(1);
+        _states = new CellState[layout.Rows, layout.Cols];
+        cells = new Cell[layout.CellCount()];
+        int rows = layout.Rows;
+        int cols = layout.Cols;
         int k = 0;
         Vector3 offset = new Vector3(-(cols-1)*0.5f*cellSize, (rows-1)*0.5f*cellSize, 0.0f);
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < cols; i++)
         {
-            for (int j = 0; j < cols; j++)
+            for (int j = 0; j < rows; j++)
             {
-                if (_states[i, j] != CellState.Empty)
+                if (layout.GetState(i, j) != CellState.Empty)
                 {
                     Cell newCell = Instantiate(cellTemplate, transform);
-                    newCell.transform.localPosition = new Vector3(j * cellSize, -i * cellSize, 0.0f) + offset;
-                    newCell.state = _states[i, j];
+                    newCell.transform.localPosition = new Vector3(i * cellSize, -j * cellSize, 0.0f) + offset;
+                    newCell.state = layout.GetState(i, j);
+                    SetState(i, j, newCell.state);
                     cells[k] = newCell;
 
                     k++;
@@ -76,7 +90,8 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     private void FindExistingCells()
     {
-        cells = new Cell[_states.Length];
+        _states = new CellState[layout.Rows, layout.Cols];
+        cells = new Cell[layout.CellCount()];
         int i = 0;
         foreach(Cell cell in GetComponentsInChildren<Cell>())
         {
@@ -84,6 +99,11 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             SetState(cell.x, cell.y, cell.state);
             i++;
         }
+    }
+
+    public CellState GetLayoutState(int col, int row)
+    {
+        return layout.GetState(col, row);
     }
 
     public CellState GetState(int col, int row)
