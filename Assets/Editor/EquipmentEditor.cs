@@ -46,19 +46,14 @@ public class EquipmentEditor : Editor
             for(int i = 0; i < cols; i++)
             {
                 CellState state = equip.GetLayoutState(i, j);
-                string buttonName = state.ToString().Substring(0,1);
+                string buttonName = EquipmentEditorUtils.GetCellButtonText(state);
                 if(GUILayout.Button(buttonName, options))
                 {
                     Debug.Log("button clicked (" + i + ", " + j + ")");
-                    equip.SetState(i, j, GetNextState(state));
+                    //equip.SetState(i, j, GetNextState(state));
                 }
             }
             EditorGUILayout.EndHorizontal();
         }
-    }
-
-    private CellState GetNextState(CellState state)
-    {
-        return (CellState)(((int)state + 1) % Enum.GetNames(typeof(CellState)).Length);
     }
 }
