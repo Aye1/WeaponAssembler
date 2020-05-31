@@ -8,11 +8,9 @@ using System;
 [ExecuteInEditMode]
 public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler
 {
-    private CellState[,] _states = { { CellState.Empty, CellState.Open, CellState.Empty },
-                                    { CellState.Open, CellState.Used, CellState.Empty },
-                                    { CellState.Open, CellState.Used, CellState.Open },
-                                    { CellState.Open, CellState.Open, CellState.Open },
-                                    { CellState.Open, CellState.Open, CellState.Open }
+    private CellState[,] _states = { { CellState.Empty, CellState.Empty, CellState.Empty},
+                                     { CellState.Empty, CellState.Open, CellState.Empty },
+                                     { CellState.Open, CellState.Used, CellState.Open },
                                   };
 
     private Cell[] cells;
@@ -83,6 +81,7 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         foreach(Cell cell in GetComponentsInChildren<Cell>())
         {
             cells[i] = cell;
+            SetState(cell.x, cell.y, cell.state);
             i++;
         }
     }
@@ -90,6 +89,11 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     public CellState GetState(int col, int row)
     {
         return _states[row, col];
+    }
+
+    public void SetState(int col, int row, CellState state)
+    {
+        _states[row, col] = state;
     }
 
     public CellState[,] GetAllStates()
