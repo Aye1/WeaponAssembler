@@ -18,8 +18,9 @@ public class EquipmentLayout : ScriptableObject
         {
             if(value != _rows)
             {
+                CellState[,] snapshot = CreateCellsSnapshot();
                 _rows = value;
-                ResetStates();
+                ResetStates(snapshot);
             }
         }
     }
@@ -31,8 +32,9 @@ public class EquipmentLayout : ScriptableObject
         {
             if (value != _cols)
             {
+                CellState[,] snapshot = CreateCellsSnapshot();
                 _cols = value;
-                ResetStates();
+                ResetStates(snapshot);
             }
         }
     }
@@ -59,13 +61,29 @@ public class EquipmentLayout : ScriptableObject
         return _states.Length;
     }
 
-    public void ResetStates()
+    private void ResetStates(CellState[,] snapshot)
     {
         CellState[] newStates = new CellState[Rows*Cols];
-        for(int i=0; i<Mathf.Min(_states.Length, newStates.Length); i++)
+        for (int i = 0; i < Mathf.Min(Cols, snapshot.GetLength(0)); i++)
         {
-            newStates[i] = _states[i];
+            for (int j = 0; j < Mathf.Min(Rows, snapshot.GetLength(1)) ; j++)
+            {
+                newStates[i + j * Cols] = snapshot[i,j];
+            }
         }
         _states = newStates;
+    }
+
+    private CellState[,] CreateCellsSnapshot()
+    {
+        CellState[,] snapshot = new CellState[Cols, Rows];
+        for (int i = 0; i < Cols; i++)
+        {
+            for (int j = 0; j < Rows; j++)
+            {
+                snapshot[i, j] = GetState(i, j);
+            }
+        }
+        return snapshot;
     }
 }
