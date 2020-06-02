@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [CreateAssetMenu(fileName = "EquipmentLayout", menuName = "ScriptableObjects/EquipmentLayout", order = 1)]
 public class EquipmentLayout : ScriptableObject
 {
-    private CellState[] _states = { };
-
-    private int _rows = 0;
-    private int _cols = 0;
+    [SerializeField] private CellState[] _states = { };
+    [SerializeField] private int _rows = 0;
+    [SerializeField] private int _cols = 0;
 
     public int Rows
     {

@@ -36,13 +36,8 @@ public class DynamicGrid : MonoBehaviour
         {
             FindExistingCells();
         }
-        for (int i = 2; i < 4; i++)
-        {
-            for (int j = 2; j <= 4; j++)
-            {
-                SetCellState(i, j, CellState.Open);
-            }
-        }
+        // Set one Open cell to start
+        SetCellState(columnCount / 2, rowCount-1, CellState.Open);
     }
 
     public void InitMatrix()

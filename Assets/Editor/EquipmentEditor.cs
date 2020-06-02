@@ -30,6 +30,8 @@ public class EquipmentEditor : Editor
 
     private void GenerateCellsMatrix(Equipment equip)
     {
+        if (equip.layout == null)
+            return;
         int cols = equip.Cols;
         int rows = equip.Rows;
 

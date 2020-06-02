@@ -33,6 +33,7 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     // Start is called before the first frame update
     void Start()
     {
+        grid = FindObjectOfType<DynamicGrid>();
         if (layout != null)
         {
             if (transform.childCount == 0)
@@ -43,7 +44,6 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             {
                 FindExistingCells();
             }
-            grid = FindObjectOfType<DynamicGrid>();
         }
     }
 
@@ -53,7 +53,6 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         cells = new Cell[layout.VisibleCellCount()];
         int rows = layout.Rows;
         int cols = layout.Cols;
-        int k = 0;
         Vector3 offset = new Vector3(-(cols-1)*0.5f*cellSize, (rows-1)*0.5f*cellSize, 0.0f);
         for (int i = 0; i < cols; i++)
         {
@@ -66,9 +65,7 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
                     newCell.state = layout.GetState(i, j);
                     newCell.x = i;
                     newCell.y = j;
-                    cells[k] = newCell;
-
-                    k++;
+                    cells[GridUtils.BtoLIndex(i,j,Cols)] = newCell;
                 }
             }
         }
