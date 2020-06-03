@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public enum EquipmentType { Unknown, Connector, Shooter };
+
 [CreateAssetMenu(fileName = "EquipmentLayout", menuName = "ScriptableObjects/EquipmentLayout", order = 1)]
 public class EquipmentLayout : ScriptableObject
 {
     [SerializeField] private CellState[] _states = { };
     [SerializeField] private int _rows = 0;
     [SerializeField] private int _cols = 0;
+    public EquipmentType type;
 
     public int Rows
     {
@@ -37,6 +40,11 @@ public class EquipmentLayout : ScriptableObject
                 ResetStates(snapshot);
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        hideFlags = HideFlags.DontUnloadUnusedAsset;
     }
 
     public CellState GetState(int x, int y)

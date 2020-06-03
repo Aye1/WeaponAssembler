@@ -8,6 +8,19 @@ using System;
 [CustomEditor(typeof(EquipmentLayout))]
 public class EquipmentLayoutEditor : Editor
 {
+    #region GUILayoutOptions
+    private GUILayoutOption[] typeEnumDropdownOptions = new GUILayoutOption[]
+    {
+        GUILayout.MinWidth(100)
+    };
+
+    GUILayoutOption[] intSliderOptions = new GUILayoutOption[]
+    {
+        GUILayout.MinWidth(20)
+    };
+
+    #endregion
+
     public override void OnInspectorGUI()
     {
         EquipmentLayout equip = (EquipmentLayout)target;
@@ -20,23 +33,24 @@ public class EquipmentLayoutEditor : Editor
     {
         EquipmentLayout equip = (EquipmentLayout)target;
 
-        EditorGUILayout.LabelField("Size", EditorStyles.boldLabel);
-        EditorGUILayout.Space();
+        EditorUtils.Header("Type");
         EditorGUI.indentLevel++;
-        GUILayoutOption[] options = new GUILayoutOption[]
-        {
-            GUILayout.MinWidth(20)
-        };
+        equip.type = (EquipmentType)EditorGUILayout.EnumPopup("Equipment Type", equip.type, typeEnumDropdownOptions);
+        EditorGUI.indentLevel--;
+
+        EditorUtils.Header("Size");
+        EditorGUI.indentLevel++;
+
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.PrefixLabel(new GUIContent("Rows"));
-        equip.Rows = EditorGUILayout.IntSlider(equip.Rows, 1, 10, options);
+        equip.Rows = EditorGUILayout.IntSlider(equip.Rows, 1, 10, intSliderOptions);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Space();
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.PrefixLabel(new GUIContent("Cols"));
-        equip.Cols = EditorGUILayout.IntSlider(equip.Cols, 1, 10, options);
+        equip.Cols = EditorGUILayout.IntSlider(equip.Cols, 1, 10, intSliderOptions);
         EditorGUILayout.EndHorizontal();
         EditorGUI.indentLevel--;
     }
@@ -47,8 +61,7 @@ public class EquipmentLayoutEditor : Editor
         int cols = equip.Cols;
         int rows = equip.Rows;
 
-        EditorGUILayout.LabelField("Grid", EditorStyles.boldLabel);
-        EditorGUILayout.Space();
+        EditorUtils.Header("Grid");
         GUILayoutOption[] options = new GUILayoutOption[]
         {
             GUILayout.Width(30),
@@ -71,5 +84,6 @@ public class EquipmentLayoutEditor : Editor
             }
             EditorGUILayout.EndHorizontal();
         }
+        EditorUtility.SetDirty(equip);
     }
 }

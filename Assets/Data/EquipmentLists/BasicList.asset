@@ -9,6 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39f2547c933b84023baa8c05cf4e8a72, type: 3}
-  m_Name: EquipmentLayout
+  m_Script: {fileID: 11500000, guid: bea411d41684145edb45d2da582146f3, type: 3}
+  m_Name: BasicList
   m_EditorClassIdentifier: 
+  equipments:
+  - {fileID: 11400000, guid: d1da72c15af0248188490ee75b62e025, type: 2}
+  - {fileID: 11400000, guid: 79aac4dfeb10d4ef7a65f6e29adc82d8, type: 2}

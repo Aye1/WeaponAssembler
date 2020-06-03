@@ -29,6 +29,7 @@ public class TabGroup : MonoBehaviour
         {
             Register(tab.button);
         }
+        ResetButtons();
     }
 
     public void Register(TabButton button)

@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f2547c933b84023baa8c05cf4e8a72, type: 3}
   m_Name: VerticalConnector1
   m_EditorClassIdentifier: 
+  _states: 0100000002000000
+  _rows: 2
+  _cols: 1
+  type: 1

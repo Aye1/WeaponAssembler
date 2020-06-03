@@ -13,7 +13,7 @@ public class TabButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     public ButtonInteracted PointerExit;
     public ButtonInteracted Clicked;
 
-    private void Start()
+    private void Awake()
     {
         background = GetComponent<Image>();
     }

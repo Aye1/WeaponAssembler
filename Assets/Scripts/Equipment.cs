@@ -47,6 +47,12 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         }
     }
 
+    public void SetLayout(EquipmentLayout newLayout)
+    {
+        layout = newLayout;
+        GenerateCells();
+    }
+
     public void GenerateCells()
     {
         ClearCells();
@@ -146,10 +152,13 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     private void SetAlpha(bool transp)
     {
-        foreach(Cell cell in cells)
+        if (cells != null)
         {
-            if(cell != null) 
-                cell.transp = transp;
+            foreach (Cell cell in cells)
+            {
+                if (cell != null)
+                    cell.transp = transp;
+            }
         }
     }
 }

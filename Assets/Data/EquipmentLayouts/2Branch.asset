@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f2547c933b84023baa8c05cf4e8a72, type: 3}
   m_Name: 2Branch
   m_EditorClassIdentifier: 
+  _states: 010000000200000001000000
+  _rows: 1
+  _cols: 3
+  type: 1
