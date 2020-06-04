@@ -4,20 +4,20 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-[CustomEditor(typeof(Equipment))]
+[CustomEditor(typeof(EquipmentVisual))]
 public class EquipmentEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        Equipment equip = (Equipment)target;
+        EquipmentVisual equip = (EquipmentVisual)target;
         EditorGUILayout.Space();
         EditorGUILayout.BeginHorizontal();
-        if(GUILayout.Button("Generate Cells"))
+        if (GUILayout.Button("Generate Cells"))
         {
             equip.GenerateCells();
         }
-        if(GUILayout.Button("Clear Cells"))
+        if (GUILayout.Button("Clear Cells"))
         {
             equip.ClearCells();
         }
@@ -28,9 +28,9 @@ public class EquipmentEditor : Editor
         GenerateCellsMatrix(equip);
     }
 
-    private void GenerateCellsMatrix(Equipment equip)
+    private void GenerateCellsMatrix(EquipmentVisual equip)
     {
-        if (equip.layout == null)
+        if (equip.Layout == null)
             return;
         int cols = equip.Cols;
         int rows = equip.Rows;
@@ -42,14 +42,14 @@ public class EquipmentEditor : Editor
         };
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
 
-        for(int j = 0; j < rows; j++)
+        for (int j = 0; j < rows; j++)
         {
             EditorGUILayout.BeginHorizontal();
-            for(int i = 0; i < cols; i++)
+            for (int i = 0; i < cols; i++)
             {
                 CellState state = equip.GetLayoutState(i, j);
                 string buttonName = EquipmentEditorUtils.GetCellButtonText(state);
-                if(GUILayout.Button(buttonName, options))
+                if (GUILayout.Button(buttonName, options))
                 {
                     Debug.Log("button clicked (" + i + ", " + j + ")");
                     //equip.SetState(i, j, GetNextState(state));

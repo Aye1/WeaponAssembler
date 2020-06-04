@@ -11,13 +11,7 @@ public class EquipmentPage : MonoBehaviour
     private void Awake()
     {
         _equipments = new List<EquipmentLayout>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        _templateButton = Resources.Load<EquipmentButton>("Prefabs/Equipment Button");
-
+        _templateButton = Resources.Load<EquipmentButton>("Prefabs/EquipmentButton");
     }
 
     public void AddEquipment(EquipmentLayout equip)

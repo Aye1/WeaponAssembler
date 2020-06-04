@@ -37,7 +37,7 @@ public class DynamicGrid : MonoBehaviour
             FindExistingCells();
         }
         // Set one Open cell to start
-        SetCellState(columnCount / 2, rowCount-1, CellState.Open);
+        SetCellState(columnCount / 2, rowCount - 1, CellState.Open);
     }
 
     public void InitMatrix()
@@ -107,7 +107,7 @@ public class DynamicGrid : MonoBehaviour
         return closestCell;
     }
 
-    private bool CanPutEquipmentOnCell(Equipment e, Cell c)
+    private bool CanPutEquipmentOnCell(EquipmentVisual e, Cell c)
     {
         List<Cell> gridCells = FindCellsWithPatternAndCenter(e, c.x, c.y);
         bool canPut = e.GetAllStates().Count(st => st != CellState.Empty) == gridCells.Count;
@@ -118,14 +118,14 @@ public class DynamicGrid : MonoBehaviour
         return canPut;
     }
 
-    public void ManageDrag(Equipment e)
+    public void ManageDrag(EquipmentVisual e)
     {
         Cell closestCell = GetClosestCell(Input.mousePosition);
         hoveredCells = FindCellsWithPatternAndCenter(e, closestCell.x, closestCell.y);
         ValidateEquipmentPosition(e, hoveredCells);
     }
 
-    public List<Cell> FindCellsWithPatternAndCenter(Equipment e, int x, int y)
+    public List<Cell> FindCellsWithPatternAndCenter(EquipmentVisual e, int x, int y)
     {
         ResetTempStates();
         List<Cell> subset = new List<Cell>();
@@ -176,7 +176,7 @@ public class DynamicGrid : MonoBehaviour
         return x >= 0 && x < gameMatrix.GetLength(0) && y >= 0 && y < gameMatrix.GetLength(1);
     }
 
-    public bool ValidateEquipmentPosition(Equipment e, List<Cell> gridCells)
+    public bool ValidateEquipmentPosition(EquipmentVisual e, List<Cell> gridCells)
     {
         List<CellState> stateList = new List<CellState>();
         foreach (CellState c in e.GetAllStates())
@@ -195,13 +195,13 @@ public class DynamicGrid : MonoBehaviour
         }
     }
 
-    public void PutEquipment(Equipment e)
+    public void PutEquipment(EquipmentVisual e)
     {
         Cell closestCell = GetClosestCell(Input.mousePosition);
         ManageStatesAfterPut(e, closestCell);
     }
 
-    private void ManageStatesAfterPut(Equipment e, Cell cell)
+    private void ManageStatesAfterPut(EquipmentVisual e, Cell cell)
     {
         if (CanPutEquipmentOnCell(e, cell))
         {

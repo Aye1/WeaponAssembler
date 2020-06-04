@@ -14,7 +14,7 @@ public struct EquipmentPageBinding
 public class EquipmentSelector : MonoBehaviour
 {
     public EquipmentList equipments;
-    [SerializeField] private Equipment currentEquipment;
+    [SerializeField] private EquipmentVisual currentEquipment;
     public List<EquipmentPageBinding> pages;
 
     // Start is called before the first frame update
@@ -51,6 +51,6 @@ public class EquipmentSelector : MonoBehaviour
 
     private void OnEquipmentSelected(EquipmentLayout equip)
     {
-        currentEquipment.SetLayout(equip);
+        currentEquipment.Layout = equip;
     }
 }

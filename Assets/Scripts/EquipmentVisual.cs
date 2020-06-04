@@ -6,9 +6,9 @@ using System.Linq;
 using System;
 
 [ExecuteInEditMode]
-public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler
+public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler
 {
-    public EquipmentLayout layout;
+    private EquipmentLayout _layout;
 
     // Cells here are just for display, we could use something else if needed
     private Cell[] cells;
@@ -21,12 +21,25 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public int Cols
     {
-        get { return layout.Cols; }
+        get { return Layout.Cols; }
     }
 
     public int Rows
     {
-        get { return layout.Rows; }
+        get { return Layout.Rows; }
+    }
+
+    public EquipmentLayout Layout
+    {
+        get { return _layout; }
+        set
+        {
+            if(_layout != value)
+            {
+                _layout = value;
+                GenerateCells();
+            }
+        }
     }
 
 
@@ -34,7 +47,7 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     void Start()
     {
         grid = FindObjectOfType<DynamicGrid>();
-        if (layout != null)
+        if (Layout != null)
         {
             if (transform.childCount == 0)
             {
@@ -47,28 +60,22 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         }
     }
 
-    public void SetLayout(EquipmentLayout newLayout)
-    {
-        layout = newLayout;
-        GenerateCells();
-    }
-
     public void GenerateCells()
     {
         ClearCells();
-        cells = new Cell[layout.VisibleCellCount()];
-        int rows = layout.Rows;
-        int cols = layout.Cols;
+        cells = new Cell[Layout.VisibleCellCount()];
+        int rows = Layout.Rows;
+        int cols = Layout.Cols;
         Vector3 offset = new Vector3(-(cols-1)*0.5f*cellSize, (rows-1)*0.5f*cellSize, 0.0f);
         for (int i = 0; i < cols; i++)
         {
             for (int j = 0; j < rows; j++)
             {
-                if (layout.GetState(i, j) != CellState.Empty)
+                if (Layout.GetState(i, j) != CellState.Empty)
                 {
                     Cell newCell = Instantiate(cellTemplate, transform);
                     newCell.transform.localPosition = new Vector3(i * cellSize, -j * cellSize, 0.0f) + offset;
-                    newCell.state = layout.GetState(i, j);
+                    newCell.state = Layout.GetState(i, j);
                     newCell.x = i;
                     newCell.y = j;
                     cells[GridUtils.BtoLIndex(i,j,Cols)] = newCell;
@@ -81,7 +88,7 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     private void FindExistingCells()
     {
-        cells = new Cell[layout.VisibleCellCount()];
+        cells = new Cell[Layout.VisibleCellCount()];
         int i = 0;
         foreach(Cell cell in GetComponentsInChildren<Cell>())
         {
@@ -92,12 +99,12 @@ public class Equipment : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public CellState GetLayoutState(int col, int row)
     {
-        return layout.GetState(col, row);
+        return Layout.GetState(col, row);
     }
 
     public IEnumerable<CellState> GetAllStates()
     {
-        return layout.GetAllStates().ToList();
+        return Layout.GetAllStates().ToList();
     }
 
     public void ClearCells()

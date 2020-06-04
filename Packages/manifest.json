@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "com.unisloth.tools": "ssh://git@github.com/Aye1/Unisloth-Tools.git",
+    "com.coffee.upm-git-extension": "https://github.com/mob-sakai/UpmGitExtension.git",
+    "com.unisloth.tools": "ssh://git@github.com/Aye1/Unisloth-Tools.git#v1.0.0",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.1.4",
@@ -42,9 +43,13 @@
     "com.unity.modules.xr": "1.0.0"
   },
   "lock": {
-    "com.unisloth.tools": {
+    "com.coffee.upm-git-extension": {
       "revision": "HEAD",
-      "hash": "da31fa5a4dda54ddebcfc6975026940558d76dbc"
+      "hash": "3721ff96c879bb58373913e6cab3c6908ec04846"
+    },
+    "com.unisloth.tools": {
+      "revision": "v1.0.0",
+      "hash": "9fb9883dec4690febad9d116312f1a2b706eeb36"
     }
   }
 }
