@@ -18,8 +18,7 @@ public class Cell : MonoBehaviour
     private Text _text;
     private Image _image;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _text = GetComponentInChildren<Text>();
         _image = GetComponent<Image>();
@@ -57,5 +56,10 @@ public class Cell : MonoBehaviour
         {
             _image.color = ColorManager.Instance.cellNotOK;
         }
+    }
+
+    public void SetShouldCatchRaycast(bool shouldCatch)
+    {
+        _image.raycastTarget = shouldCatch;
     }
 }

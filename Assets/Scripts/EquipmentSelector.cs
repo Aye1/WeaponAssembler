@@ -14,12 +14,16 @@ public struct EquipmentPageBinding
 public class EquipmentSelector : MonoBehaviour
 {
     public EquipmentList equipments;
-    [SerializeField] private EquipmentVisual currentEquipment;
     public List<EquipmentPageBinding> pages;
+
+#pragma warning disable 0649
+    [SerializeField] private EquipmentVisual currentEquipment;
+#pragma warning restore 0649
 
     // Start is called before the first frame update
     void Start()
     {
+        currentEquipment.ShouldCatchRaycast = false; ;
         PopulatePages();
     }
 

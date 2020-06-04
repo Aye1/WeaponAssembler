@@ -18,6 +18,7 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
     
     private bool dragging = false;
     private DynamicGrid grid;
+    private bool _shouldCatchRaycast = false;
 
     public int Cols
     {
@@ -42,6 +43,18 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         }
     }
 
+    public bool ShouldCatchRaycast
+    {
+        get { return _shouldCatchRaycast; }
+        set
+        {
+            if(_shouldCatchRaycast != value)
+            {
+                _shouldCatchRaycast = value;
+                SetCellsShouldCatchRaycast();
+            }
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -84,6 +97,7 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         }
         RectTransform rect = GetComponent<RectTransform>();
         rect.sizeDelta = new Vector2(cols * cellSize, rows * cellSize);
+        SetCellsShouldCatchRaycast();
     }
 
     private void FindExistingCells()
@@ -143,7 +157,6 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     public void OnDrop(PointerEventData eventData)
     {
-        // ?
         Debug.Log("drop");
         grid.PutEquipment(this);
     }
@@ -165,6 +178,17 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
             {
                 if (cell != null)
                     cell.transp = transp;
+            }
+        }
+    }
+
+    public void SetCellsShouldCatchRaycast()
+    {
+        if (cells != null)
+        {
+            foreach (Cell c in cells)
+            {
+                c.SetShouldCatchRaycast(ShouldCatchRaycast);
             }
         }
     }
