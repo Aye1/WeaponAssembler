@@ -107,6 +107,8 @@ public class DynamicGrid : MonoBehaviour
         return closestCell;
     }
 
+    // WARNING: this method also changes the TempCellState of the cells
+    // TODO: avoid this side effect
     private bool CanPutEquipmentOnCell(EquipmentVisual e, Cell c)
     {
         List<Cell> gridCells = FindCellsWithPatternAndCenter(e, c.x, c.y);
@@ -215,25 +217,31 @@ public class DynamicGrid : MonoBehaviour
             {
                 for (int j = 0; j < rows; j++)
                 {
-                    Cell gridCell = gameMatrix[x + i - offsetX, y + j - offsetY];
-                    gridCell.tempState = TempCellState.NAN;
-                    CellState equipCellState = CellState.Empty;
-                    equipCellState = e.GetLayoutState(i, j);
-
-                    if (x + i <= columnCount && x + i >= 0 && y + j <= rowCount && y + j >= 0
-                    && equipCellState != CellState.Empty)
+                    // The grid may not contain the current index
+                    // It happens when we put ghost rows/cols to have centered equipments
+                    if (GridContains(x + i - offsetX, y + j - offsetY))
                     {
-                        if (equipCellState == CellState.Used)
+                        Cell gridCell = gameMatrix[x + i - offsetX, y + j - offsetY];
+                        gridCell.tempState = TempCellState.NAN;
+                        CellState equipCellState = CellState.Empty;
+                        equipCellState = e.GetLayoutState(i, j);
+
+                        if (x + i <= columnCount && x + i >= 0 && y + j <= rowCount && y + j >= 0
+                        && equipCellState != CellState.Empty)
                         {
-                            gridCell.state = CellState.Used;
-                        }
-                        if (equipCellState == CellState.Open && gridCell.state == CellState.Inactive)
-                        {
-                            gridCell.state = CellState.Open;
+                            if (equipCellState == CellState.Used)
+                            {
+                                gridCell.state = CellState.Used;
+                            }
+                            if (equipCellState == CellState.Open && gridCell.state == CellState.Inactive)
+                            {
+                                gridCell.state = CellState.Open;
+                            }
                         }
                     }
                 }
             }
         }
+        ResetTempStates();
     }
 }

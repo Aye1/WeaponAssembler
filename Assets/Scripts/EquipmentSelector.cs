@@ -15,21 +15,30 @@ public class EquipmentSelector : MonoBehaviour
 {
     public EquipmentList equipments;
     public List<EquipmentPageBinding> pages;
+    public bool isDraggingEquipment = false;
 
 #pragma warning disable 0649
-    [SerializeField] private EquipmentVisual currentEquipment;
+    [SerializeField] private EquipmentVisual _currentEquipment;
 #pragma warning restore 0649
+
+    private DynamicGrid _grid;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentEquipment.ShouldCatchRaycast = false; ;
+        //currentEquipment.ShouldCatchRaycast = false; ;
+        _grid = FindObjectOfType<DynamicGrid>();
         PopulatePages();
     }
 
     private void Update()
     {
-        currentEquipment.transform.position = Input.mousePosition;
+        if (isDraggingEquipment)
+        {
+            _currentEquipment.transform.position = Input.mousePosition;
+            _grid.ManageDrag(_currentEquipment);
+            ManageClick();
+        }
     }
 
     private void PopulatePages()
@@ -55,6 +64,25 @@ public class EquipmentSelector : MonoBehaviour
 
     private void OnEquipmentSelected(EquipmentLayout equip)
     {
-        currentEquipment.Layout = equip;
+        _currentEquipment.gameObject.SetActive(true);
+        _currentEquipment.Layout = equip;
+        _currentEquipment.dragging = true;
+        isDraggingEquipment = true;
+    }
+
+    public void DeselectEquipment()
+    {
+        isDraggingEquipment = false;
+        _currentEquipment.dragging = false;
+        _currentEquipment.gameObject.SetActive(false);
+    }
+
+    private void ManageClick()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            DeselectEquipment();
+            _grid.PutEquipment(_currentEquipment);
+        }
     }
 }

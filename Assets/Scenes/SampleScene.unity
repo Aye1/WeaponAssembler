@@ -903,6 +903,7 @@ GameObject:
   - component: {fileID: 76597572}
   - component: {fileID: 76597571}
   - component: {fileID: 76597573}
+  - component: {fileID: 76597574}
   m_Layer: 5
   m_Name: Page Shooters
   m_TagString: Untagged
@@ -942,14 +943,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.11764705, g: 0.37829924, b: 0.93333334, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -978,6 +979,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb3afbc8c031d4b4ea42d8a1dddf4313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &76597574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76597569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 50, y: 50}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &93058820
 GameObject:
   m_ObjectHideFlags: 0
@@ -3469,8 +3494,9 @@ MonoBehaviour:
   - equipmentType: 1
     page: {fileID: 1352496659}
   - equipmentType: 2
-    page: {fileID: 0}
-  currentEquipment: {fileID: 702418886}
+    page: {fileID: 76597573}
+  isDraggingEquipment: 0
+  _currentEquipment: {fileID: 702418886}
 --- !u!1 &682380944
 GameObject:
   m_ObjectHideFlags: 0
@@ -3616,6 +3642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellTemplate: {fileID: 5216936629367232838, guid: 94b4a237af8eb451e9b23ce8a1e3c7a5,
     type: 3}
+  dragging: 0
 --- !u!114 &702418887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6931,14 +6958,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9339623, g: 0.118948035, b: 0.118948035, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

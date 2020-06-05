@@ -16,9 +16,9 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     public Cell cellTemplate;
     
-    private bool dragging = false;
+    public bool dragging = false;
     private DynamicGrid grid;
-    private bool _shouldCatchRaycast = false;
+    //private bool _shouldCatchRaycast = false;
 
     public int Cols
     {
@@ -43,7 +43,7 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         }
     }
 
-    public bool ShouldCatchRaycast
+    /*public bool ShouldCatchRaycast
     {
         get { return _shouldCatchRaycast; }
         set
@@ -51,10 +51,10 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
             if(_shouldCatchRaycast != value)
             {
                 _shouldCatchRaycast = value;
-                SetCellsShouldCatchRaycast();
+                //SetCellsShouldCatchRaycast();
             }
         }
-    }
+    }*/
 
     // Start is called before the first frame update
     void Start()
@@ -97,7 +97,7 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         }
         RectTransform rect = GetComponent<RectTransform>();
         rect.sizeDelta = new Vector2(cols * cellSize, rows * cellSize);
-        SetCellsShouldCatchRaycast();
+        //SetCellsShouldCatchRaycast();
     }
 
     private void FindExistingCells()
@@ -142,17 +142,17 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
-        grid.ManageDrag(this);
+        //grid.ManageDrag(this);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        dragging = true;
+        //dragging = true;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        dragging = false;
+        //dragging = false;
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -167,6 +167,7 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         {
             Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane);
             transform.position = mousePos;
+            //grid.ManageDrag(this);
         }
     }
 
@@ -182,14 +183,14 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         }
     }
 
-    public void SetCellsShouldCatchRaycast()
+    /*public void SetCellsShouldCatchRaycast()
     {
         if (cells != null)
         {
             foreach (Cell c in cells)
             {
-                c.SetShouldCatchRaycast(ShouldCatchRaycast);
+                //c.SetShouldCatchRaycast(ShouldCatchRaycast);
             }
         }
-    }
+    }*/
 }

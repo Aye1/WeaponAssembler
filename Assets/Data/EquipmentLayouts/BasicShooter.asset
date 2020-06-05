@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39f2547c933b84023baa8c05cf4e8a72, type: 3}
-  m_Name: VerticalConnector1
+  m_Name: BasicShooter
   m_EditorClassIdentifier: 
-  _states: 010000000200000003000000
-  _rows: 3
+  _states: 02000000
+  _rows: 1
   _cols: 1
-  type: 1
+  type: 2
