@@ -1,13 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
-using System;
 
 [ExecuteInEditMode]
 [CustomEditor(typeof(EquipmentLayout))]
 public class EquipmentLayoutEditor : Editor
 {
+    private Vector2Int _selectedCellPos = new Vector2Int(-1, -1);
+
+    private Color _selectedCellColor = new Color(0.6f, 0.6f, 0.6f);
+    private Vector2Int _noSelectedCellPos = new Vector2Int(-1, -1);
+
     #region GUILayoutOptions
     private GUILayoutOption[] typeEnumDropdownOptions = new GUILayoutOption[]
     {
@@ -25,6 +27,8 @@ public class EquipmentLayoutEditor : Editor
     {
         EquipmentLayout equip = (EquipmentLayout)target;
         GeneratePropertyFields();
+        EditorGUILayout.Space();
+        GenerateSelectedCellInfo();
         EditorGUILayout.Space();
         GenerateCellsMatrix();
     }
@@ -76,14 +80,42 @@ public class EquipmentLayoutEditor : Editor
             {
                 CellState state = equip.GetState(i, j);
                 string buttonName = EquipmentEditorUtils.GetCellButtonText(state);
+                bool isSelectedCell = _selectedCellPos.x == i && _selectedCellPos.y == j;
+                if (isSelectedCell)
+                {
+                    GUI.backgroundColor = _selectedCellColor;
+                }
                 if (GUILayout.Button(buttonName, options))
                 {
-                    Debug.Log("button clicked (" + i + ", " + j + ")");
-                    equip.SetState(i, j, EquipmentEditorUtils.GetNextState(state));
+                    if (!isSelectedCell)
+                    {
+                        _selectedCellPos = new Vector2Int(i, j);
+                    }
+                    else
+                    {
+                        _selectedCellPos = _noSelectedCellPos;
+                    }
+                }
+                if(isSelectedCell)
+                {
+                    GUI.backgroundColor = Color.white;
                 }
             }
             EditorGUILayout.EndHorizontal();
         }
         EditorUtility.SetDirty(equip);
+    }
+
+    private void GenerateSelectedCellInfo()
+    {
+        EquipmentLayout equip = (EquipmentLayout)target;
+        int x = _selectedCellPos.x;
+        int y = _selectedCellPos.y;
+        if (_selectedCellPos.x != -1)
+        {
+            EditorUtils.Header("Cell Info");
+            CellState tmpState = (CellState)EditorGUILayout.EnumPopup("State", equip.GetState(x,y), typeEnumDropdownOptions);
+            equip.SetState(x, y, tmpState);
+        }
     }
 }
