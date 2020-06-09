@@ -222,7 +222,11 @@ public class DynamicGrid : MonoBehaviour
                     if (GridContains(x + i - offsetX, y + j - offsetY))
                     {
                         Cell gridCell = gameMatrix[x + i - offsetX, y + j - offsetY];
-                        gridCell.tempState = TempCellState.NAN;
+                        Cell newCell = Instantiate(e.Layout.GetCell(i, j), gridCell.transform.position, Quaternion.identity, transform);
+                        gameMatrix[x + i - offsetX, y + j - offsetY] = newCell;
+                        Destroy(gridCell.gameObject);
+
+                        newCell.tempState = TempCellState.NAN;
                         CellState equipCellState = CellState.Empty;
                         equipCellState = e.GetLayoutState(i, j);
 
@@ -231,11 +235,11 @@ public class DynamicGrid : MonoBehaviour
                         {
                             if (equipCellState == CellState.Used)
                             {
-                                gridCell.state = CellState.Used;
+                                newCell.state = CellState.Used;
                             }
                             if (equipCellState == CellState.Open && gridCell.state == CellState.Inactive)
                             {
-                                gridCell.state = CellState.Open;
+                                newCell.state = CellState.Open;
                             }
                         }
                     }

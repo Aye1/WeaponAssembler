@@ -10,9 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39f2547c933b84023baa8c05cf4e8a72, type: 3}
-  m_Name: 2Branch
+  m_Name: Vertical Connector
   m_EditorClassIdentifier: 
-  _states: 010000000200000001000000
-  _rows: 1
-  _cols: 3
+  _states: 010000000200000003000000
+  _cells:
+  - {fileID: 5216936629367232838, guid: 94b4a237af8eb451e9b23ce8a1e3c7a5, type: 3}
+  - {fileID: 5216936629367232838, guid: 94b4a237af8eb451e9b23ce8a1e3c7a5, type: 3}
+  - {fileID: 0}
+  _rows: 3
+  _cols: 1
   type: 1

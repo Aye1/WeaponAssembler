@@ -22,7 +22,7 @@ public class Cell : MonoBehaviour
     {
         _text = GetComponentInChildren<Text>();
         _image = GetComponent<Image>();
-        _text.text = "";
+        //_text.text = "";
     }
 
     // Update is called once per frame

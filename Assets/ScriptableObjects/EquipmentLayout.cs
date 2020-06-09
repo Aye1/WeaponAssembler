@@ -1,8 +1,5 @@
 ﻿using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public enum EquipmentType { Unknown, Connector, Shooter };
 
@@ -10,6 +7,7 @@ public enum EquipmentType { Unknown, Connector, Shooter };
 public class EquipmentLayout : ScriptableObject
 {
     [SerializeField] private CellState[] _states = { };
+    [SerializeField] private Cell[] _cells = { };
     [SerializeField] private int _rows = 0;
     [SerializeField] private int _cols = 0;
     public EquipmentType type;
@@ -21,9 +19,11 @@ public class EquipmentLayout : ScriptableObject
         {
             if(value != _rows)
             {
-                CellState[,] snapshot = CreateCellsSnapshot();
+                CellState[,] snapshot = CreateStatesSnapshot();
+                Cell[,] cellSnapshot = CreateCellsSnapshot();
                 _rows = value;
                 ResetStates(snapshot);
+                ResetCells(cellSnapshot);
             }
         }
     }
@@ -35,9 +35,11 @@ public class EquipmentLayout : ScriptableObject
         {
             if (value != _cols)
             {
-                CellState[,] snapshot = CreateCellsSnapshot();
+                CellState[,] snapshot = CreateStatesSnapshot();
+                Cell[,] cellSnapshot = CreateCellsSnapshot();
                 _cols = value;
                 ResetStates(snapshot);
+                ResetCells(cellSnapshot);
             }
         }
     }
@@ -69,6 +71,23 @@ public class EquipmentLayout : ScriptableObject
         return _states;
     }
 
+    public Cell GetCell(int x, int y)
+    {
+        if (x < Cols && y < Rows && x >= 0 && y >= 0 && GetState(x,y) != CellState.Empty)
+        {
+            return _cells[x + y * Cols];
+        }
+        return null;
+    }
+
+    public void SetCell(int x, int y, Cell cell)
+    {
+        if (x < Cols && y < Rows && x >= 0 && y >= 0 && GetState(x,y) != CellState.Empty)
+        {
+            _cells[x + y * Cols] = cell;
+        }
+    }
+
     public int CellCount()
     {
         return _states.Length;
@@ -92,7 +111,20 @@ public class EquipmentLayout : ScriptableObject
         _states = newStates;
     }
 
-    private CellState[,] CreateCellsSnapshot()
+    private void ResetCells(Cell[,] snapshot)
+    {
+        Cell[] newCells = new Cell[Rows * Cols];
+        for (int i = 0; i < Mathf.Min(Cols, snapshot.GetLength(0)); i++)
+        {
+            for (int j = 0; j < Mathf.Min(Rows, snapshot.GetLength(1)); j++)
+            {
+                newCells[i + j * Cols] = snapshot[i, j];
+            }
+        }
+        _cells = newCells;
+    }
+
+    private CellState[,] CreateStatesSnapshot()
     {
         CellState[,] snapshot = new CellState[Cols, Rows];
         for (int i = 0; i < Cols; i++)
@@ -103,5 +135,23 @@ public class EquipmentLayout : ScriptableObject
             }
         }
         return snapshot;
+    }
+
+    private Cell[,] CreateCellsSnapshot()
+    {
+        Cell[,] snapshot = new Cell[Cols, Rows];
+        for (int i = 0; i < Cols; i++)
+        {
+            for (int j = 0; j < Rows; j++)
+            {
+                snapshot[i, j] = GetCell(i, j);
+            }
+        }
+        return snapshot;
+    }
+
+    public bool CheckLayout()
+    {
+        return _cells.Count(x => x != null) == _states.Count(x => x != CellState.Empty && x != CellState.Inactive);
     }
 }

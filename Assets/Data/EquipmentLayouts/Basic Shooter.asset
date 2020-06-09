@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39f2547c933b84023baa8c05cf4e8a72, type: 3}
-  m_Name: BasicShooter
+  m_Name: Basic Shooter
   m_EditorClassIdentifier: 
   _states: 02000000
+  _cells:
+  - {fileID: 2933154013390510616, guid: 4c372499d1fc54747909cba2023ac3ff, type: 3}
   _rows: 1
   _cols: 1
   type: 2
