@@ -62,4 +62,9 @@ public class Cell : MonoBehaviour
     {
         _image.raycastTarget = shouldCatch;
     }
+
+    public void SetImage(Sprite sprite)
+    {
+        _image.sprite = sprite;
+    }
 }

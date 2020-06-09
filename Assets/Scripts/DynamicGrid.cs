@@ -224,6 +224,9 @@ public class DynamicGrid : MonoBehaviour
                         Cell gridCell = gameMatrix[x + i - offsetX, y + j - offsetY];
                         Cell newCell = Instantiate(e.Layout.GetCell(i, j), gridCell.transform.position, Quaternion.identity, transform);
                         gameMatrix[x + i - offsetX, y + j - offsetY] = newCell;
+                        newCell.x = gridCell.x;
+                        newCell.y = gridCell.y;
+                        newCell.SetImage(e.Layout.GetSprite(i, j));
                         Destroy(gridCell.gameObject);
 
                         newCell.tempState = TempCellState.NAN;

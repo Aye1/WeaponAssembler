@@ -147,6 +147,9 @@ public class EquipmentLayoutEditor : Editor
             Cell cell = equip.GetCell(x, y);
             Cell tmpCell = (Cell)EditorGUILayout.ObjectField("Cell", cell, typeof(Cell), false, _gameObjectOptions);
             equip.SetCell(x, y, tmpCell);
+            Sprite sprite = equip.GetSprite(x, y);
+            Sprite tmpSprite = (Sprite)EditorGUILayout.ObjectField("Sprite", sprite, typeof(Sprite), false, _gameObjectOptions);
+            equip.SetSprite(x, y, tmpSprite);
 
             EditorGUI.indentLevel--;
         }

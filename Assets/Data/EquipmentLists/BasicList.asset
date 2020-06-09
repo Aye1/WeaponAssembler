@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BasicList
   m_EditorClassIdentifier: 
   equipments:
-  - {fileID: 11400000, guid: 311514ca82d954837a6c05ddcd04c7b9, type: 2}
-  - {fileID: 11400000, guid: 45bbfb855c5824bbe893e17321ad447e, type: 2}
-  - {fileID: 11400000, guid: 48a51610737d543edbeb8eef9f5f55cb, type: 2}
+  - {fileID: 11400000, guid: 06f05264307984008b4afdcb28557115, type: 2}
+  - {fileID: 11400000, guid: a92d2f69df6444e869d0227670eecf50, type: 2}
+  - {fileID: 11400000, guid: c8c6b47329b1a4d0fb64d71e7f1e0fa7, type: 2}
