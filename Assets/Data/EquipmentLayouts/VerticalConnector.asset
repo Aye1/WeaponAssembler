@@ -18,7 +18,7 @@ MonoBehaviour:
     sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   - cell: {fileID: 5216936629367232838, guid: 94b4a237af8eb451e9b23ce8a1e3c7a5, type: 3}
     state: 2
-    sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+    sprite: {fileID: 21300000, guid: 026b4f62ff8f248b28aa473291ef4a47, type: 3}
   - cell: {fileID: 0}
     state: 3
     sprite: {fileID: 0}

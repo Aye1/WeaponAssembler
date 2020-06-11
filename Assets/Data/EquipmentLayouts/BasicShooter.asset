@@ -15,7 +15,7 @@ MonoBehaviour:
   _bindings:
   - cell: {fileID: 2933154013390510616, guid: 4c372499d1fc54747909cba2023ac3ff, type: 3}
     state: 2
-    sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    sprite: {fileID: 21300000, guid: 561c0d255f3b04048a7869d072ce4608, type: 3}
   _rows: 1
   _cols: 1
   type: 2
