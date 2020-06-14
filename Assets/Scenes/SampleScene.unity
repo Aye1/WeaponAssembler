@@ -331,7 +331,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 5
   y: 0
 --- !u!114 &10752474
@@ -425,7 +424,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 0
   y: 3
 --- !u!114 &17678580
@@ -753,7 +751,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 1
   y: 1
 --- !u!114 &60994517
@@ -1037,7 +1034,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 4
   y: 5
 --- !u!114 &108737287
@@ -1208,6 +1204,49 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 3816127735979137259}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &238889791
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 238889793}
+  - component: {fileID: 238889792}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &238889792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238889791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db664252d0da64e43ab2271ddfe92281, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &238889793
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238889791}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 635.25, y: 369.5, z: 11.549999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &269350641
 GameObject:
   m_ObjectHideFlags: 0
@@ -1237,6 +1276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 359d39b7fed934e86bb83c7da7ed715d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 1323180188}
+  equipSelector: {fileID: 667441441}
 --- !u!4 &269350643
 Transform:
   m_ObjectHideFlags: 0
@@ -1383,7 +1424,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 6
   y: 4
 --- !u!114 &280213067
@@ -1477,7 +1517,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 0
   y: 4
 --- !u!114 &281265152
@@ -1571,7 +1610,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 1
   y: 0
 --- !u!114 &332284841
@@ -1665,7 +1703,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 6
   y: 0
 --- !u!114 &347504766
@@ -1759,7 +1796,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 2
   y: 3
 --- !u!114 &384835458
@@ -2057,7 +2093,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 3
   y: 5
 --- !u!114 &399599846
@@ -2229,7 +2264,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 5
   y: 5
 --- !u!114 &406563946
@@ -2323,7 +2357,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 2
   y: 0
 --- !u!114 &436147466
@@ -2601,8 +2634,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1323180188}
-        m_MethodName: ToggleVisibility
+      - m_Target: {fileID: 238889792}
+        m_MethodName: ToggleStates
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2703,7 +2736,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 0
   y: 5
 --- !u!114 &491689439
@@ -2875,7 +2907,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 5
   y: 1
 --- !u!114 &549763148
@@ -2969,7 +3000,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 4
   y: 6
 --- !u!114 &549939295
@@ -3126,7 +3156,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 5
   y: 2
 --- !u!114 &561500539
@@ -3220,7 +3249,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 1
   y: 2
 --- !u!114 &604432061
@@ -3626,7 +3654,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 3
   y: 2
 --- !u!114 &682380947
@@ -4026,7 +4053,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 5
   y: 6
 --- !u!114 &765830321
@@ -4120,7 +4146,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 0
   y: 0
 --- !u!114 &771855436
@@ -4214,7 +4239,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 5
   y: 4
 --- !u!114 &772374389
@@ -4345,7 +4369,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 4
   y: 4
 --- !u!114 &850022942
@@ -4439,7 +4462,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 6
   y: 5
 --- !u!114 &874968550
@@ -4599,7 +4621,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 4
   y: 2
 --- !u!114 &908507327
@@ -4771,7 +4792,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 0
   y: 1
 --- !u!114 &948395711
@@ -4865,7 +4885,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 3
   y: 1
 --- !u!114 &962651196
@@ -5454,7 +5473,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 6
   y: 3
 --- !u!114 &1011244005
@@ -5626,7 +5644,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 0
   y: 2
 --- !u!114 &1031716174
@@ -5720,7 +5737,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 0
   y: 6
 --- !u!114 &1072496996
@@ -5892,7 +5908,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 2
   y: 4
 --- !u!114 &1109160807
@@ -5986,7 +6001,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 3
   y: 4
 --- !u!114 &1119420755
@@ -6080,7 +6094,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 4
   y: 3
 --- !u!114 &1148713434
@@ -6174,7 +6187,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 2
   y: 1
 --- !u!114 &1171389675
@@ -6424,7 +6436,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 3
   y: 3
 --- !u!114 &1255976662
@@ -6518,7 +6529,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 6
   y: 1
 --- !u!114 &1282856869
@@ -6612,7 +6622,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 3
   y: 0
 --- !u!114 &1299739654
@@ -6706,7 +6715,6 @@ MonoBehaviour:
   value: 0
   state: 1
   tempState: 2
-  transp: 0
   x: 3
   y: 6
 --- !u!114 &1306165423
@@ -6800,7 +6808,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 1
   y: 5
 --- !u!114 &1315909018
@@ -7226,7 +7233,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 6
   y: 6
 --- !u!114 &1422444303
@@ -7716,7 +7722,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 2
   y: 6
 --- !u!114 &1643611740
@@ -7810,7 +7815,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 6
   y: 2
 --- !u!114 &1651320029
@@ -8060,7 +8064,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 4
   y: 0
 --- !u!114 &1708139357
@@ -8154,7 +8157,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 1
   y: 3
 --- !u!114 &1737079340
@@ -8871,7 +8873,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 2
   y: 5
 --- !u!114 &1932138304
@@ -8965,7 +8966,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 1
   y: 6
 --- !u!114 &1933660414
@@ -9059,7 +9059,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 4
   y: 1
 --- !u!114 &1940563302
@@ -9309,7 +9308,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 1
   y: 4
 --- !u!114 &2038296411
@@ -9793,7 +9791,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 5
   y: 3
 --- !u!114 &2086249058
@@ -9965,7 +9962,6 @@ MonoBehaviour:
   value: 0
   state: 0
   tempState: 2
-  transp: 0
   x: 2
   y: 2
 --- !u!114 &2096175873

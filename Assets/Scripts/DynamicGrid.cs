@@ -276,4 +276,12 @@ public class DynamicGrid : MonoBehaviour
             DOTween.To(() => cell.GetAplha(), x => cell.SetAlpha(x), endValue, 1.0f);
         }
     }
+
+    public void SetVisibility(bool visibility)
+    {
+        if(visibility != IsActive)
+        {
+            ToggleVisibility();
+        }
+    }
 }
