@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System;
+using UnityEngine.UI;
+using DG.Tweening;
 
 [ExecuteInEditMode]
 public class DynamicGrid : MonoBehaviour
@@ -10,11 +10,10 @@ public class DynamicGrid : MonoBehaviour
     public Cell cellTemplate;
     public Cell[,] gameMatrix;
     public int cellSize = 50;
-
     public int rowCount;
     public int columnCount;
 
-    private List<Cell> hoveredCells;
+    public bool IsActive { get; private set; }
 
     /*
      *  0,0            c-1,0
@@ -28,6 +27,7 @@ public class DynamicGrid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        IsActive = true;
         if (transform.childCount == 0)
         {
             InitMatrix();
@@ -111,20 +111,27 @@ public class DynamicGrid : MonoBehaviour
     // TODO: avoid this side effect
     private bool CanPutEquipmentOnCell(EquipmentVisual e, Cell c)
     {
-        List<Cell> gridCells = FindCellsWithPatternAndCenter(e, c.x, c.y);
-        bool canPut = e.GetAllStates().Count(st => st != CellState.Empty) == gridCells.Count;
-        foreach (Cell currCell in gridCells)
+        if (IsActive)
         {
-            canPut = canPut && currCell.tempState == TempCellState.OK;
+            List<Cell> gridCells = FindCellsWithPatternAndCenter(e, c.x, c.y);
+            bool canPut = e.GetAllStates().Count(st => st != CellState.Empty) == gridCells.Count;
+            foreach (Cell currCell in gridCells)
+            {
+                canPut = canPut && currCell.tempState == TempCellState.OK;
+            }
+            return canPut;
         }
-        return canPut;
+        return false;
     }
 
     public void ManageDrag(EquipmentVisual e)
     {
-        Cell closestCell = GetClosestCell(Input.mousePosition);
-        hoveredCells = FindCellsWithPatternAndCenter(e, closestCell.x, closestCell.y);
-        ValidateEquipmentPosition(e, hoveredCells);
+        if (IsActive)
+        {
+            Cell closestCell = GetClosestCell(Input.mousePosition);
+            List<Cell> hoveredCells = FindCellsWithPatternAndCenter(e, closestCell.x, closestCell.y);
+            ValidateEquipmentPosition(e, hoveredCells);
+        }
     }
 
     public List<Cell> FindCellsWithPatternAndCenter(EquipmentVisual e, int x, int y)
@@ -199,8 +206,11 @@ public class DynamicGrid : MonoBehaviour
 
     public void PutEquipment(EquipmentVisual e)
     {
-        Cell closestCell = GetClosestCell(Input.mousePosition);
-        ManageStatesAfterPut(e, closestCell);
+        if (IsActive)
+        {
+            Cell closestCell = GetClosestCell(Input.mousePosition);
+            ManageStatesAfterPut(e, closestCell);
+        }
     }
 
     private void ManageStatesAfterPut(EquipmentVisual e, Cell cell)
@@ -222,27 +232,32 @@ public class DynamicGrid : MonoBehaviour
                     if (GridContains(x + i - offsetX, y + j - offsetY))
                     {
                         Cell gridCell = gameMatrix[x + i - offsetX, y + j - offsetY];
-                        Cell newCell = Instantiate(e.Layout.GetCell(i, j), gridCell.transform.position, Quaternion.identity, transform);
-                        gameMatrix[x + i - offsetX, y + j - offsetY] = newCell;
-                        newCell.x = gridCell.x;
-                        newCell.y = gridCell.y;
-                        newCell.SetImage(e.Layout.GetSprite(i, j));
-                        Destroy(gridCell.gameObject);
-
-                        newCell.tempState = TempCellState.NAN;
-                        CellState equipCellState = CellState.Empty;
-                        equipCellState = e.GetLayoutState(i, j);
-
-                        if (x + i <= columnCount && x + i >= 0 && y + j <= rowCount && y + j >= 0
-                        && equipCellState != CellState.Empty)
+                        // The cell can be null if it's an empty cell
+                        if (e.Layout.GetCell(i,j) != null)
                         {
-                            if (equipCellState == CellState.Used)
+                            Cell newCell = Instantiate(e.Layout.GetCell(i, j), gridCell.transform.position, Quaternion.identity, transform);
+                            gameMatrix[x + i - offsetX, y + j - offsetY] = newCell;
+                            newCell.x = gridCell.x;
+                            newCell.y = gridCell.y;
+                            newCell.SetImage(e.Layout.GetSprite(i, j));
+                            Destroy(gridCell.gameObject);
+
+                            newCell.tempState = TempCellState.NAN;
+                            CellState equipCellState = CellState.Empty;
+                            equipCellState = e.GetLayoutState(i, j);
+
+                            if (x + i <= columnCount && x + i >= 0 && y + j <= rowCount && y + j >= 0
+                            && equipCellState != CellState.Empty)
                             {
-                                newCell.state = CellState.Used;
-                            }
-                            if (equipCellState == CellState.Open && gridCell.state == CellState.Inactive)
-                            {
-                                newCell.state = CellState.Open;
+                                if (equipCellState == CellState.Used)
+                                {
+                                    newCell.state = CellState.Used;
+                                }
+                                if (equipCellState == CellState.Open &&
+                                    (gridCell.state == CellState.Inactive || gridCell.state == CellState.Open))
+                                {
+                                    newCell.state = CellState.Open;
+                                }
                             }
                         }
                     }
@@ -250,5 +265,15 @@ public class DynamicGrid : MonoBehaviour
             }
         }
         ResetTempStates();
+    }
+
+    public void ToggleVisibility()
+    {
+        IsActive = !IsActive;
+        float endValue = IsActive ? 1.0f : 0.0f;
+        foreach(Cell cell in gameMatrix)
+        {
+            DOTween.To(() => cell.GetAplha(), x => cell.SetAlpha(x), endValue, 1.0f);
+        }
     }
 }

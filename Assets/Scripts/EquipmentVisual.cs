@@ -89,6 +89,7 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
                     Cell newCell = Instantiate(cellTemplate, transform);
                     newCell.transform.localPosition = new Vector3(i * cellSize, -j * cellSize, 0.0f) + offset;
                     newCell.state = Layout.GetState(i, j);
+                    newCell.SetImage(Layout.GetSprite(i, j));
                     newCell.x = i;
                     newCell.y = j;
                     cells[GridUtils.BtoLIndex(i,j,Cols)] = newCell;
@@ -97,7 +98,6 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         }
         RectTransform rect = GetComponent<RectTransform>();
         rect.sizeDelta = new Vector2(cols * cellSize, rows * cellSize);
-        //SetCellsShouldCatchRaycast();
     }
 
     private void FindExistingCells()
@@ -167,7 +167,6 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         {
             Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane);
             transform.position = mousePos;
-            //grid.ManageDrag(this);
         }
     }
 
@@ -178,19 +177,8 @@ public class EquipmentVisual : MonoBehaviour, IDragHandler, IBeginDragHandler, I
             foreach (Cell cell in cells)
             {
                 if (cell != null)
-                    cell.transp = transp;
+                    cell.SetAlpha(0.8f);
             }
         }
     }
-
-    /*public void SetCellsShouldCatchRaycast()
-    {
-        if (cells != null)
-        {
-            foreach (Cell c in cells)
-            {
-                //c.SetShouldCatchRaycast(ShouldCatchRaycast);
-            }
-        }
-    }*/
 }

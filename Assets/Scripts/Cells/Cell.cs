@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using DG.Tweening;
 
 [Serializable]
 public enum CellState { Inactive, Open, Used, Empty };
@@ -11,12 +12,11 @@ public class Cell : MonoBehaviour
     public int value;
     public CellState state = CellState.Inactive;
     public TempCellState tempState = TempCellState.NAN;
-    public bool transp = false;
     public int x;
     public int y;
 
     private Text _text;
-    private Image _image;
+    protected Image _image;
 
     void Awake()
     {
@@ -28,43 +28,53 @@ public class Cell : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ManageColor();
+    }
+
+    private void ManageColor()
+    {
+        Color baseColor = Color.white;
         //_text.text = "(" + x + ", " + y+")";
         if (tempState == TempCellState.NAN)
         {
             switch (state)
             {
                 case CellState.Inactive:
-                    //_text.text = "Inactive";
-                    _image.color = transp ? ColorManager.Instance.cellInactiveTranspColor : ColorManager.Instance.cellInactiveColor;
-
+                    baseColor = ColorManager.Instance.cellInactiveColor;
                     break;
                 case CellState.Open:
-                    //_text.text = "Open";
-                    _image.color = transp ? ColorManager.Instance.cellOpenTranspColor : ColorManager.Instance.cellOpenColor;
+                    baseColor = ColorManager.Instance.cellOpenColor;
                     break;
                 case CellState.Used:
-                    //_text.text = "Used";
-                    _image.color = transp ? ColorManager.Instance.cellUsedTranspColor : ColorManager.Instance.cellUsedColor;
+                    baseColor = ColorManager.Instance.cellUsedColor;
                     break;
             }
         }
         else if (tempState == TempCellState.OK)
         {
-            _image.color = ColorManager.Instance.cellOK;
-        } 
+            baseColor = ColorManager.Instance.cellOK;
+        }
         else if (tempState == TempCellState.NOK)
         {
-            _image.color = ColorManager.Instance.cellNotOK;
+            baseColor = ColorManager.Instance.cellNotOK;
         }
-    }
-
-    public void SetShouldCatchRaycast(bool shouldCatch)
-    {
-        _image.raycastTarget = shouldCatch;
+        // Alpha is managed separately
+        _image.color = new Color(baseColor.r, baseColor.g, baseColor.b, _image.color.a);
     }
 
     public void SetImage(Sprite sprite)
     {
         _image.sprite = sprite;
+    }
+
+    public void SetAlpha(float alpha)
+    {
+        Color newColor = new Color(_image.color.r, _image.color.g, _image.color.b, alpha);
+        _image.color = newColor;
+    }
+
+    public float GetAplha()
+    {
+        return _image.color.a;
     }
 }
